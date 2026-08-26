@@ -59,7 +59,7 @@ export class AnalyticsService {
 
     const userLinksResult = await linkRepository.findUserLinks({ userId, limit: 1000 });
     const totalLinks = userLinksResult.total;
-    const activeLinks = userLinksResult.links.filter((l) => l.isActive && (!l.expiresAt || new Date(l.expiresAt) > new Date())).length;
+    const activeLinks = userLinksResult.links.filter((l: any) => l.isActive && (!l.expiresAt || new Date(l.expiresAt) > new Date())).length;
 
     return {
       totalLinks,

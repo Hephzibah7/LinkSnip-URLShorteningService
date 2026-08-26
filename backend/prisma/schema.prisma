@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(uuid())
+  email           String         @unique
+  name            String
+  passwordHash    String
+  isEmailVerified Boolean        @default(false)
+  apiKey          String?        @unique
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  links           Link[]
+  tags            Tag[]
+  folders         Folder[]
+  tokens          Token[]
+
+  @@map("users")
+}
+
+model Link {
+  id           String       @id @default(uuid())
+  userId       String?
+  title        String?
+  originalUrl  String
+  shortCode    String       @unique
+  customAlias  String?      @unique
+  passwordHash String?
+  redirectType Int          @default(302) // 301 = Permanent, 302 = Temporary
+  expiresAt    DateTime?
+  maxClicks    Int?
+  clickCount   Int          @default(0)
+  isActive     Boolean      @default(true)
+  isMalicious  Boolean      @default(false)
+  folderId     String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  user         User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder       Folder?      @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  clickEvents  ClickEvent[]
+  tags         LinkTag[]
+
+  @@index([shortCode])
+  @@index([customAlias])
+  @@index([userId])
+  @@map("links")
+}
+
+model ClickEvent {
+  id             String   @id @default(uuid())
+  linkId         String
+  timestamp      DateTime @default(now())
+  ipAddress      String?
+  country        String?  @default("Unknown")
+  countryCode    String?  @default("XX")
+  city           String?  @default("Unknown")
+  region         String?
+  referrer       String?
+  referrerDomain String?  @default("Direct")
+  userAgent      String?
+  deviceType     String?  @default("Desktop")
+  os             String?  @default("Unknown")
+  browser        String?  @default("Unknown")
+  isBot          Boolean  @default(false)
+
+  link           Link     @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId])
+  @@index([timestamp])
+  @@map("click_events")
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  userId    String
+  name      String
+  color     String    @default("#18181b")
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links     LinkTag[]
+
+  @@unique([userId, name])
+  @@map("tags")
+}
+
+model LinkTag {
+  linkId String
+  tagId  String
+
+  link   Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([linkId, tagId])
+  @@map("link_tags")
+}
+
+model Folder {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  color       String   @default("#18181b")
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links       Link[]
+
+  @@unique([userId, name])
+  @@map("folders")
+}
+
+model Token {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  type      String   // EMAIL_VERIFY, PASSWORD_RESET
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("tokens")
+}

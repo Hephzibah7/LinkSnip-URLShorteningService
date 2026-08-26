@@ -10,6 +10,7 @@ import { CreateLinkModal } from '../components/links/CreateLinkModal.js';
 import { EditLinkModal } from '../components/links/EditLinkModal.js';
 import { BulkUploadModal } from '../components/links/BulkUploadModal.js';
 import { QRCodeModal } from '../components/links/QRCodeModal.js';
+import { FolderTagManagerModal } from '../components/links/FolderTagManagerModal.js';
 import {
   Link2,
   MousePointerClick,
@@ -432,6 +433,7 @@ export const DashboardPage: React.FC = () => {
         onClose={() => setCreateModalOpen(false)}
         onSuccess={() => fetchDashboardData()}
       />
+
 
       <EditLinkModal
         isOpen={editModalOpen}

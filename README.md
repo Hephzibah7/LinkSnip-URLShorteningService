@@ -597,3 +597,31 @@ GitHub: `https://github.com/Hephzibah7`
 # License
 
 This project is intended for educational and portfolio purposes.
+
+
+# Screenshots
+
+
+### Swagger
+
+![LinkSnip Swagger](./screenshots/pic7.png)
+
+
+### Login
+
+![LinkSnip Login](./screenshots/pic2.png)
+
+### Analytics
+
+![LinkSnip Analytics](./screenshots/pic5.png)
+
+![LinkSnip Analytics](./screenshots/pic6.png)
+
+### Create Link
+
+![Create Link](./screenshots/pic4.png)
+
+### Dashboard
+
+![Dashboard](./screenshots/pic3.png)
+

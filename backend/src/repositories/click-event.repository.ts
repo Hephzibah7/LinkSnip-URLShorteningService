@@ -38,15 +38,16 @@ export class ClickEventRepository {
     });
   }
 
+  //Fetch click events based on a link/user/date filter and transform the raw events into analytics data that the frontend can display.
   async getLinkAnalytics(options: AnalyticsQueryOptions) {
-    const { linkId, userId, startDate, endDate } = options;
+    const { linkId, userId, startDate, endDate } = options; //filtering options 
 
-    const where: Prisma.ClickEventWhereInput = {};
+    const where: Prisma.ClickEventWhereInput = {}; //prisma where object initially empty mean sno filtering yet
 
     if (linkId) {
       where.linkId = linkId;
     } else if (userId) {
-      where.link = { userId };
+      where.link = { userId }; //where:{link:{userId}}
     }
 
     if (startDate || endDate) {
@@ -72,7 +73,7 @@ export class ClickEventRepository {
           browser: true,
           isBot: true,
         },
-        orderBy: { timestamp: 'asc' },
+        orderBy: { timestamp: 'asc' }, //for time series analytics
       }),
     ]);
 

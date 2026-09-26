@@ -96,7 +96,7 @@ export class LinkService {
     }
 
     // 3. Generate Unique Short Code
-    const shortCode = await this.generateUniqueShortCode(6);
+    const shortCode = await this.generateUniqueShortCode(10);
 
     // 4. Hash password if provided
     let passwordHash: string | undefined = undefined;

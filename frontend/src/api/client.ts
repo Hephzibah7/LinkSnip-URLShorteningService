@@ -25,9 +25,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Don't auto-redirect if checking public routes or optional auth
+      //login page and redirect page does not require authentication
       if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/r/')) {
         // clear expired token
-        // localStorage.removeItem('linksnip_token');
+        localStorage.removeItem('linksnip_token');
       }
     }
     return Promise.reject(error);

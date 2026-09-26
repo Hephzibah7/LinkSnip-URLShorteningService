@@ -44,7 +44,7 @@ export const BulkUploadModal: React.FC<BulkUploadModalProps> = ({
 
   const handleDownloadTemplate = async () => {
     try {
-      const blob = await linksApi.downloadBulkTemplate();
+      const blob = await linksApi.downloadBulkTemplate(); //binary data
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement('a');
       link.href = url;
